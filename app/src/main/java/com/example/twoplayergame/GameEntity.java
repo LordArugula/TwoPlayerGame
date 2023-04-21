@@ -13,10 +13,10 @@ public class GameEntity implements Transform, Renderer, Collider {
     // renderer
     private Bitmap bitmap;
 
-    public GameEntity(Vector2 position, float rotation, Vector2 size, Bitmap bitmap) {
+    public GameEntity(Vector2 position, float rotation, Bitmap bitmap) {
         this.position = position;
         this.rotation = rotation;
-        this.size = size;
+        this.size = new Vector2(bitmap.getWidth(), bitmap.getHeight());
         this.halfSize = Vector2.mul(size, 0.5);
         this.bitmap = bitmap;
     }

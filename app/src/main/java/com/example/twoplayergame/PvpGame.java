@@ -1,7 +1,6 @@
 package com.example.twoplayergame;
 
 import android.graphics.Canvas;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewGroup;
@@ -9,7 +8,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CoopGame implements Game {
+public class PvpGame implements Game {
 
     private final MainThread mainThread;
 
@@ -18,12 +17,10 @@ public class CoopGame implements Game {
     private final List<Projectile> activeProjectiles;
     private final ProjectilePoolProvider projectilePoolProvider;
 
-    private Character playerOne;
-    private Character playerTwo;
-    private int screenWidth;
-    private int screenHeight;
+    private final int screenWidth;
+    private final int screenHeight;
 
-    public CoopGame(MainActivity context, SurfaceView surfaceView, Player playerOne, Player playerTwo) {
+    public PvpGame(MainActivity context, SurfaceView surfaceView, Player playerOne, Player playerTwo) {
         this.surfaceView = surfaceView;
 
         screenWidth = context.getResources().getDisplayMetrics().widthPixels;
@@ -51,7 +48,7 @@ public class CoopGame implements Game {
         PlayerView playerTwoPlayerView = new PlayerView(playerTwo);
         playerTwoPlayerView.bind(playerTwoViewGroup, playerTwo);
 
-        mainThread = new MainThread(CoopGame.this);
+        mainThread = new MainThread(PvpGame.this);
     }
 
     private void onCharacterDied(Character character) {
@@ -74,27 +71,66 @@ public class CoopGame implements Game {
             projectile.update(deltaTime, time);
         }
 
+        renderGameEntities();
+
+        handleCollisions();
+
+        restrictPlayersToScreenBoundaries();
+    }
+
+    private void restrictPlayersToScreenBoundaries() {
+        for (Character character : characters) {
+            Vector2 position = character.getPosition();
+            Vector2 halfSize = character.getHalfSize();
+
+            double x = position.x;
+            double y = position.y;
+
+            if (position.x - halfSize.x < 0) {
+                x = halfSize.x;
+            }
+
+            if (position.y - halfSize.y < 0) {
+                y = halfSize.y;
+            }
+
+            if (position.x + halfSize.x > screenWidth) {
+                x = screenWidth - halfSize.x;
+            }
+
+            if (position.y + halfSize.y > screenHeight) {
+                y = screenHeight - halfSize.y;
+            }
+
+            character.setPosition(new Vector2(x, y));
+        }
+    }
+
+    private void renderGameEntities() {
         SurfaceHolder surfaceHolder = surfaceView.getHolder();
         Canvas canvas = null;
         try {
             canvas = surfaceHolder.lockCanvas();
-            surfaceView.draw(canvas);
-            for (Character character : characters) {
-                character.render(canvas);
-            }
+            if (canvas != null) {
+                surfaceView.draw(canvas);
+                for (Character character : characters) {
+                    character.render(canvas);
+                }
 
-            for (Projectile projectile : activeProjectiles) {
-                projectile.render(canvas);
+                for (Projectile projectile : activeProjectiles) {
+                    projectile.render(canvas);
+                }
             }
         } finally {
             if (canvas != null) {
                 surfaceHolder.unlockCanvasAndPost(canvas);
             }
         }
+    }
 
+    private void handleCollisions() {
         ProjectilePool pool = projectilePoolProvider.getInstance();
 
-        // do physics
         for (int i = 0; i < activeProjectiles.size(); i++) {
             Projectile projectile = activeProjectiles.get(i);
 
@@ -109,7 +145,7 @@ public class CoopGame implements Game {
             }
 
             for (Character character : characters) {
-                if (!(projectile.getOwner() instanceof Player)
+                if (projectile.getOwner() != character
                         && character.checkCollision(projectile)) {
                     character.takeDamage(projectile.getDamage());
 

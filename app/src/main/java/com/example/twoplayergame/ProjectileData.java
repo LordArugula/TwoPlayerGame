@@ -10,11 +10,11 @@ public class ProjectileData {
 
     private Vector2 size;
 
-    public ProjectileData(Bitmap bitmap, double speed, int damage, Vector2 size) {
+    public ProjectileData(Bitmap bitmap, double speed, int damage) {
         this.bitmap = bitmap;
         this.speed = speed;
         this.damage = damage;
-        this.size = size;
+        this.size = new Vector2(bitmap.getWidth(), bitmap.getHeight());
     }
 
     public Vector2 getSize() {

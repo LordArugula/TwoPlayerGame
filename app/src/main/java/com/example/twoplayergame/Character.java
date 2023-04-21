@@ -34,8 +34,8 @@ public class Character extends GameEntity implements RequiresUpdate {
     // projectile spawner data
     private ProjectileSpawner projectileSpawner;
 
-    public Character(Vector2 position, float rotation, Vector2 size, Bitmap drawable) {
-        super(position, rotation, size, drawable);
+    public Character(Vector2 position, float rotation, Bitmap drawable) {
+        super(position, rotation, drawable);
 
         onHealthChangedListeners = new ArrayList<>();
         onScoreChangedListeners = new ArrayList<>();

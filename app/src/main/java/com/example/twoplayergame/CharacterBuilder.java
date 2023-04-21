@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 public class CharacterBuilder {
     private Vector2 position;
     private float rotation;
-    private Vector2 size;
     private Bitmap bitmap;
 
     private String name;
@@ -21,11 +20,6 @@ public class CharacterBuilder {
 
     public CharacterBuilder withRotation(float degrees) {
         this.rotation = degrees;
-        return this;
-    }
-
-    public CharacterBuilder withSize(Vector2 size) {
-        this.size = size;
         return this;
     }
 
@@ -60,7 +54,7 @@ public class CharacterBuilder {
     }
 
     public Player buildPlayer() {
-        Player player = new Player(position, rotation, size, bitmap);
+        Player player = new Player(position, rotation, bitmap);
         player.setName(name);
         player.setHealth(health);
         player.setScore(score);

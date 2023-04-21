@@ -33,14 +33,13 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         Bitmap projectileBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.projectile);
         Player playerOne = new CharacterBuilder()
                 .withPosition(new Vector2(screenWidth * 0.5, screenHeight * 0.75))
-                .withSize(new Vector2(playerBitmap.getWidth(), playerBitmap.getHeight()))
                 .withBitmap(playerBitmap)
                 .withHealth(10)
                 .withScore(0)
                 .withMovementSpeed(100)
                 .withName("Player One")
                 .withProjectileSpawner(new ProjectileSpawnerBuilder()
-                        .withProjectile(new ProjectileData(projectileBitmap, 60, 1, new Vector2(projectileBitmap.getWidth(), projectileBitmap.getHeight())), 3)
+                        .withProjectile(new ProjectileData(projectileBitmap, 60, 1), 3)
                         .withFireSpeed(1)
                         .withArcDegrees(30)
                         .withRadius(1)
@@ -50,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         Bitmap playerTwoBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.player_two);
         Player playerTwo = new CharacterBuilder()
                 .withPosition(new Vector2(screenWidth * 0.5, screenHeight * 0.25))
-                .withSize(new Vector2(playerTwoBitmap.getWidth(), playerTwoBitmap.getHeight()))
                 .withBitmap(playerTwoBitmap)
                 .withHealth(10)
                 .withScore(0)
@@ -58,14 +56,14 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 .withMovementSpeed(100)
                 .withName("Player Two")
                 .withProjectileSpawner(new ProjectileSpawnerBuilder()
-                        .withProjectile(new ProjectileData(projectileBitmap, 100, 1, new Vector2(projectileBitmap.getWidth(), projectileBitmap.getHeight())), 2)
+                        .withProjectile(new ProjectileData(projectileBitmap, 100, 1), 2)
                         .withFireSpeed(1.25)
                         .withArcDegrees(15)
                         .withRadius(1)
                         .build())
                 .buildPlayer();
 
-        game = new CoopGame(this, surfaceView, playerOne, playerTwo);
+        game = new PvpGame(this, surfaceView, playerOne, playerTwo);
     }
 
     @Override

@@ -8,7 +8,7 @@ public class Projectile extends GameEntity implements RequiresUpdate {
     private double movementSpeed;
 
     public Projectile() {
-        super(new Vector2(0, 0), 0, new Vector2(0, 0), null);
+        super(new Vector2(0, 0), 0, null);
     }
 
     @Override

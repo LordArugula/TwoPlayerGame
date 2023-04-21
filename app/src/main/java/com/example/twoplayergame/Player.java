@@ -7,8 +7,8 @@ public class Player extends Character {
     // user input
     private Vector2 inputDirection;
 
-    public Player(Vector2 position, float rotation, Vector2 size, Bitmap drawable) {
-        super(position, rotation, size, drawable);
+    public Player(Vector2 position, float rotation, Bitmap drawable) {
+        super(position, rotation, drawable);
         inputDirection = Vector2.zero();
     }
 

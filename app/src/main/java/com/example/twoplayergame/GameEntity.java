@@ -16,9 +16,7 @@ public class GameEntity implements Transform, Renderer, Collider {
     public GameEntity(Vector2 position, float rotation, Bitmap bitmap) {
         this.position = position;
         this.rotation = rotation;
-        this.size = new Vector2(bitmap.getWidth(), bitmap.getHeight());
-        this.halfSize = Vector2.mul(size, 0.5);
-        this.bitmap = bitmap;
+        setBitmap(bitmap);
     }
 
     @Override
@@ -39,6 +37,14 @@ public class GameEntity implements Transform, Renderer, Collider {
 
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
+
+        if (bitmap == null) {
+            this.size = Vector2.zero();
+            this.halfSize = Vector2.zero();
+        } else {
+            this.size = new Vector2(bitmap.getWidth(), bitmap.getHeight());
+            this.halfSize = Vector2.mul(size, 0.5);
+        }
     }
 
     @Override

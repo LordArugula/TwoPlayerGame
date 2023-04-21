@@ -72,38 +72,8 @@ public class PvpGame implements Game {
         }
 
         renderGameEntities();
-
         handleCollisions();
-
         restrictPlayersToScreenBoundaries();
-    }
-
-    private void restrictPlayersToScreenBoundaries() {
-        for (Character character : characters) {
-            Vector2 position = character.getPosition();
-            Vector2 halfSize = character.getHalfSize();
-
-            double x = position.x;
-            double y = position.y;
-
-            if (position.x - halfSize.x < 0) {
-                x = halfSize.x;
-            }
-
-            if (position.y - halfSize.y < 0) {
-                y = halfSize.y;
-            }
-
-            if (position.x + halfSize.x > screenWidth) {
-                x = screenWidth - halfSize.x;
-            }
-
-            if (position.y + halfSize.y > screenHeight) {
-                y = screenHeight - halfSize.y;
-            }
-
-            character.setPosition(new Vector2(x, y));
-        }
     }
 
     private void renderGameEntities() {
@@ -164,6 +134,34 @@ public class PvpGame implements Game {
         Projectile lastProjectile = activeProjectiles.get(activeProjectiles.size() - 1);
         activeProjectiles.set(i, lastProjectile);
         activeProjectiles.remove(activeProjectiles.size() - 1);
+    }
+
+    private void restrictPlayersToScreenBoundaries() {
+        for (Character character : characters) {
+            Vector2 position = character.getPosition();
+            Vector2 halfSize = character.getHalfSize();
+
+            double x = position.x;
+            double y = position.y;
+
+            if (position.x - halfSize.x < 0) {
+                x = halfSize.x;
+            }
+
+            if (position.y - halfSize.y < 0) {
+                y = halfSize.y;
+            }
+
+            if (position.x + halfSize.x > screenWidth) {
+                x = screenWidth - halfSize.x;
+            }
+
+            if (position.y + halfSize.y > screenHeight) {
+                y = screenHeight - halfSize.y;
+            }
+
+            character.setPosition(new Vector2(x, y));
+        }
     }
 
     @Override

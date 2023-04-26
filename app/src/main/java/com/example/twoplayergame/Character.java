@@ -14,13 +14,8 @@ public class Character extends GameEntity implements RequiresUpdate {
         void onScoreChanged(Character player, int score);
     }
 
-    public interface OnCharacterDiedListener {
-        void onCharacterDied(Character character);
-    }
-
     private final List<OnHealthChangedListener> onHealthChangedListeners;
     private final List<OnScoreChangedListener> onScoreChangedListeners;
-    private final List<OnCharacterDiedListener> onCharacterDiedListeners;
 
     // character information
     private String name;
@@ -39,7 +34,6 @@ public class Character extends GameEntity implements RequiresUpdate {
 
         onHealthChangedListeners = new ArrayList<>();
         onScoreChangedListeners = new ArrayList<>();
-        onCharacterDiedListeners = new ArrayList<>();
 
         movementDirection = Vector2.zero();
     }
@@ -61,11 +55,6 @@ public class Character extends GameEntity implements RequiresUpdate {
         for (OnHealthChangedListener listener : onHealthChangedListeners) {
             listener.onHealthChanged(this, health);
         }
-        if (health <= 0) {
-            for (OnCharacterDiedListener listener : onCharacterDiedListeners) {
-                listener.onCharacterDied(this);
-            }
-        }
     }
 
     public void takeDamage(int amount) {
@@ -73,10 +62,12 @@ public class Character extends GameEntity implements RequiresUpdate {
         for (OnHealthChangedListener listener : onHealthChangedListeners) {
             listener.onHealthChanged(this, health);
         }
-        if (health <= 0) {
-            for (OnCharacterDiedListener listener : onCharacterDiedListeners) {
-                listener.onCharacterDied(this);
-            }
+    }
+
+    public void takeHealing(int amount) {
+        health += amount;
+        for (OnHealthChangedListener listener : onHealthChangedListeners) {
+            listener.onHealthChanged(this, health);
         }
     }
 
@@ -88,7 +79,7 @@ public class Character extends GameEntity implements RequiresUpdate {
         this.score = score;
 
         for (OnScoreChangedListener listener : onScoreChangedListeners) {
-            listener.onScoreChanged(this, health);
+            listener.onScoreChanged(this, score);
         }
     }
 
@@ -96,7 +87,7 @@ public class Character extends GameEntity implements RequiresUpdate {
         score += amount;
 
         for (OnScoreChangedListener listener : onScoreChangedListeners) {
-            listener.onScoreChanged(this, health);
+            listener.onScoreChanged(this, score);
         }
     }
 
@@ -122,10 +113,6 @@ public class Character extends GameEntity implements RequiresUpdate {
 
     public void addOnScoreChangedListener(OnScoreChangedListener onScoreChanged) {
         onScoreChangedListeners.add(onScoreChanged);
-    }
-
-    public void addOnCharacterDiedListener(OnCharacterDiedListener onCharacterDied) {
-        onCharacterDiedListeners.add(onCharacterDied);
     }
 
     @Override

@@ -20,7 +20,7 @@ public class PvpGame implements Game {
     private final int screenWidth;
     private final int screenHeight;
 
-    public PvpGame(MainActivity context, SurfaceView surfaceView, Player playerOne, Player playerTwo) {
+    public PvpGame(GameActivity context, SurfaceView surfaceView, Player playerOne, Player playerTwo) {
         this.surfaceView = surfaceView;
 
         screenWidth = context.getResources().getDisplayMetrics().widthPixels;
@@ -34,16 +34,14 @@ public class PvpGame implements Game {
         characters.add(playerOne);
         characters.add(playerTwo);
 
-        playerOne.addOnCharacterDiedListener(this::onCharacterDied);
-
         ViewGroup playerOneViewGroup = context.findViewById(R.id.player_one_game_view);
-        context.getLayoutInflater().inflate(R.layout.game_view, playerOneViewGroup);
+        context.getLayoutInflater().inflate(R.layout.player_view, playerOneViewGroup);
 
         PlayerView playerOnePlayerView = new PlayerView(playerOne);
         playerOnePlayerView.bind(playerOneViewGroup, playerOne);
 
         ViewGroup playerTwoViewGroup = context.findViewById(R.id.player_two_game_view);
-        context.getLayoutInflater().inflate(R.layout.game_view, playerTwoViewGroup);
+        context.getLayoutInflater().inflate(R.layout.player_view, playerTwoViewGroup);
 
         PlayerView playerTwoPlayerView = new PlayerView(playerTwo);
         playerTwoPlayerView.bind(playerTwoViewGroup, playerTwo);
@@ -52,7 +50,7 @@ public class PvpGame implements Game {
     }
 
     private void onCharacterDied(Character character) {
-        characters.remove(character);
+
     }
 
     private void trackProjectile(Projectile projectile) {
@@ -73,6 +71,15 @@ public class PvpGame implements Game {
 
         renderGameEntities();
         handleCollisions();
+
+        for (int i = characters.size() - 1; i >= 0; i--) {
+            Character character = characters.get(i);
+            if (character.getHealth() <= 0) {
+                characters.remove(i);
+                onCharacterDied(character);
+            }
+        }
+
         restrictPlayersToScreenBoundaries();
     }
 
@@ -115,14 +122,17 @@ public class PvpGame implements Game {
             }
 
             for (Character character : characters) {
+                int damage = 0;
                 if (projectile.getOwner() != character
                         && character.checkCollision(projectile)) {
-                    character.takeDamage(projectile.getDamage());
+                    damage += projectile.getDamage();
+                    projectile.getOwner().addScore(1);
 
                     removeProjectile(i);
                     i--;
                     pool.release(projectile);
                 }
+                character.takeDamage(damage);
             }
         }
     }

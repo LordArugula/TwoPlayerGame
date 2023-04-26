@@ -14,14 +14,14 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
-public class MainActivity extends AppCompatActivity implements SurfaceHolder.Callback {
+public class GameActivity extends AppCompatActivity implements SurfaceHolder.Callback {
     private Game game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setFullscreen();
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_game);
 
         SurfaceView surfaceView = findViewById(R.id.game_view);
         surfaceView.getHolder().addCallback(this);

@@ -14,10 +14,6 @@ public class PlayerView {
     private TextView healthText;
     private TextView scoreText;
 
-    private boolean isMovingJoystick;
-    private int joystickX;
-    private int joystickY;
-
     public PlayerView(Character character) {
         handler = new Handler(Looper.getMainLooper());
         character.addOnHealthChangedListener(this::onHealthChanged);

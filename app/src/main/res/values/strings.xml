@@ -8,4 +8,8 @@
     <string name="menu_title">Two Player Shooter</string>
     <string name="play_button">Play</string>
     <string name="high_scores_button">High Scores</string>
+    <string name="scores_recycler_view">List of High Scores</string>
+    <string name="scores_text">High Scores</string>
+    <string name="clear_scores_button">Clear Scores</string>
+    <string name="EXTRA_GAME_MODE">GAME_MODE</string>
 </resources>

@@ -2,7 +2,6 @@ package com.example.twoplayergame;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
 
@@ -29,6 +28,8 @@ public class MenuActivity extends AppCompatActivity {
 
     private void onClickPlayButton(View view) {
         Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra(String.valueOf(R.string.EXTRA_GAME_MODE), GameMode.PVP);
         startActivity(intent);
+        finish();
     }
 }

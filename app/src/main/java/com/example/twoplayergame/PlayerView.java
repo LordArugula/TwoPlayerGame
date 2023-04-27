@@ -14,14 +14,15 @@ public class PlayerView {
     private TextView healthText;
     private TextView scoreText;
 
-    public PlayerView(Character character) {
+    public PlayerView() {
         handler = new Handler(Looper.getMainLooper());
-        character.addOnHealthChangedListener(this::onHealthChanged);
-        character.addOnScoreChangedListener(this::onScoreChanged);
     }
 
     @SuppressLint({"SetTextI18n", "ClickableViewAccessibility"})
     public void bind(ViewGroup viewGroup, Player player) {
+        player.addOnHealthChangedListener(this::onHealthChanged);
+        player.addOnScoreChangedListener(this::onScoreChanged);
+
         healthText = viewGroup.findViewById(R.id.health_text);
         healthText.setText(Integer.toString(player.getHealth()));
 

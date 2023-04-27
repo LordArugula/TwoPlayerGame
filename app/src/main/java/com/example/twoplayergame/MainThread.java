@@ -30,8 +30,4 @@ public class MainThread extends Thread {
             lastTime = now;
         }
     }
-
-    public void quit() {
-        isRunning = false;
-    }
 }

@@ -3,7 +3,7 @@ package com.example.twoplayergame;
 import android.graphics.Bitmap;
 
 public class CharacterBuilder {
-    private Vector2 position;
+    private Vector2 position = Vector2.zero();
     private float rotation;
     private Bitmap bitmap;
 

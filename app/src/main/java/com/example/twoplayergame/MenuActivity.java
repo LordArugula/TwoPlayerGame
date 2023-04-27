@@ -28,7 +28,7 @@ public class MenuActivity extends AppCompatActivity {
 
     private void onClickPlayButton(View view) {
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(String.valueOf(R.string.EXTRA_GAME_MODE), GameMode.PVP);
+        intent.putExtra(String.valueOf(R.string.EXTRA_GAME_MODE), GameMode.COOP);
         startActivity(intent);
         finish();
     }

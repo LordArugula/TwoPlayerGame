@@ -1,59 +1,63 @@
 package com.example.twoplayergame;
 
-import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.Locale;
 
 public class PlayerView {
     private final Handler handler;
     private TextView healthText;
     private TextView scoreText;
 
+    private Player player;
+
     public PlayerView() {
         handler = new Handler(Looper.getMainLooper());
     }
 
-    @SuppressLint({"SetTextI18n", "ClickableViewAccessibility"})
     public void bind(ViewGroup viewGroup, Player player) {
+        this.player = player;
         player.addOnHealthChangedListener(this::onHealthChanged);
         player.addOnScoreChangedListener(this::onScoreChanged);
 
         healthText = viewGroup.findViewById(R.id.health_text);
-        healthText.setText(Integer.toString(player.getHealth()));
-
+        onHealthChanged(player, player.getHealth(), 0);
         scoreText = viewGroup.findViewById(R.id.score_text);
-        scoreText.setText(Integer.toString(player.getScore()));
+        onScoreChanged(player, player.getScore());
 
-        Button fireButton = viewGroup.findViewById(R.id.fire_button);
-        fireButton.setOnTouchListener((view, motionEvent) -> {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    player.setFireInput(true);
-                    break;
-                case MotionEvent.ACTION_UP:
-                    player.setFireInput(false);
-                    break;
-            }
-            return false;
-        });
+        View fireButton = viewGroup.findViewById(R.id.fire_button);
+        fireButton.setOnTouchListener(this::onTouchFireButton);
 
         View joystickView = viewGroup.findViewById(R.id.joystick_view);
         Joystick joystick = new Joystick(joystickView, player::setMoveInput);
         joystickView.setRotation(player.getRotation());
     }
 
-    @SuppressLint("SetTextI18n")
-    public void onHealthChanged(Character character, int health) {
-        handler.post(() -> healthText.setText(Integer.toString(health)));
+    private boolean onTouchFireButton(View view, MotionEvent motionEvent) {
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                player.setFireInput(true);
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                player.setFireInput(false);
+                break;
+            default:
+                return false;
+        }
+        return true;
     }
 
-    @SuppressLint("SetTextI18n")
+    public void onHealthChanged(Character character, int current, int old) {
+        handler.post(() -> healthText.setText(String.format(Locale.getDefault(), "%d", current)));
+    }
+
     public void onScoreChanged(Character character, int score) {
-        handler.post(() -> scoreText.setText(Integer.toString(score)));
+        handler.post(() -> scoreText.setText(String.format(Locale.getDefault(), "%d", score)));
     }
 }

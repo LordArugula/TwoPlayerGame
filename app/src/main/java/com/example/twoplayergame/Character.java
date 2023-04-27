@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Character extends GameEntity implements RequiresUpdate {
     public interface OnHealthChangedListener {
-        void onHealthChanged(Character player, int health);
+        void onHealthChanged(Character player, int currentHealth, int oldHealth);
     }
 
     public interface OnScoreChangedListener {
@@ -51,23 +51,26 @@ public class Character extends GameEntity implements RequiresUpdate {
     }
 
     public void setHealth(int health) {
+        int oldHealth = this.health;
         this.health = health;
         for (OnHealthChangedListener listener : onHealthChangedListeners) {
-            listener.onHealthChanged(this, health);
+            listener.onHealthChanged(this, health, oldHealth);
         }
     }
 
     public void takeDamage(int amount) {
+        int oldHealth = this.health;
         health -= amount;
         for (OnHealthChangedListener listener : onHealthChangedListeners) {
-            listener.onHealthChanged(this, health);
+            listener.onHealthChanged(this, health, oldHealth);
         }
     }
 
     public void takeHealing(int amount) {
+        int oldHealth = this.health;
         health += amount;
         for (OnHealthChangedListener listener : onHealthChangedListeners) {
-            listener.onHealthChanged(this, health);
+            listener.onHealthChanged(this, health, oldHealth);
         }
     }
 
@@ -110,6 +113,11 @@ public class Character extends GameEntity implements RequiresUpdate {
     public void addOnHealthChangedListener(OnHealthChangedListener onHealthChanged) {
         onHealthChangedListeners.add(onHealthChanged);
     }
+
+    public void removeOnHealthChangedListener(OnHealthChangedListener onCharacterHealthChanged) {
+        onHealthChangedListeners.remove(onCharacterHealthChanged);
+    }
+
 
     public void addOnScoreChangedListener(OnScoreChangedListener onScoreChanged) {
         onScoreChangedListeners.add(onScoreChanged);

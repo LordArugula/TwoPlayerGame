@@ -9,6 +9,11 @@ public class PvpGame extends Game {
     }
 
     @Override
+    protected void onUpdate(double deltaTime, double time) {
+
+    }
+
+    @Override
     protected boolean hasCollision(Character character, Projectile projectile) {
         return projectile.getOwner() != character
                 && character.checkCollision(projectile);

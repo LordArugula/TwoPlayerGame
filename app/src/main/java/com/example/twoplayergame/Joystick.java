@@ -1,6 +1,5 @@
 package com.example.twoplayergame;
 
-import android.annotation.SuppressLint;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -13,10 +12,9 @@ public class Joystick {
     private float joyStickHeight;
 
     private boolean isActive;
-    private OnJoystickMoveListener listener;
+    private final OnJoystickMoveListener listener;
     private final View joystick;
 
-    @SuppressLint("ClickableViewAccessibility")
     public Joystick(View joystickView, OnJoystickMoveListener listener) {
         this.listener = listener;
         joystick = joystickView.findViewById(R.id.joystick_handle);
@@ -44,6 +42,7 @@ public class Joystick {
                 break;
             }
             case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
                 if (isActive) {
                     float centerX = (view.getWidth() - joystickWidth) / 2f;
                     float centerY = (view.getHeight() - joyStickHeight) / 2f;

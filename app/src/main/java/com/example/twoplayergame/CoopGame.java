@@ -8,8 +8,8 @@ public class CoopGame extends Game {
     }
 
     @Override
-    public void update(double deltaTime, double time) {
-        super.update(deltaTime, time);
+    protected void onUpdate(double deltaTime, double time) {
+
     }
 
     @Override

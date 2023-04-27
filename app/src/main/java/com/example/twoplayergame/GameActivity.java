@@ -32,6 +32,9 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         SurfaceView surfaceView = findViewById(R.id.game_view);
         surfaceView.getHolder().addCallback(this);
 
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+
         LayoutInflater layoutInflater = getLayoutInflater();
 
         ViewGroup playerOneViewGroup = findViewById(R.id.player_one_game_view);
@@ -40,7 +43,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         Bitmap playerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.player_one);
         Bitmap projectileBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.projectile);
         Player playerOne = new CharacterBuilder()
-//                .withPosition(new Vector2(screenWidth * 0.5, screenHeight * 0.75))
+                .withPosition(new Vector2(width * 0.5, height * 0.75))
                 .withBitmap(playerBitmap)
                 .withHealth(10)
                 .withScore(0)
@@ -62,7 +65,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         Bitmap playerTwoBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.player_two);
         Player playerTwo = new CharacterBuilder()
-//                .withPosition(new Vector2(screenWidth * 0.5, screenHeight * 0.25))
+                .withPosition(new Vector2(width * 0.5, height * 0.25))
                 .withBitmap(playerTwoBitmap)
                 .withHealth(10)
                 .withScore(0)
@@ -85,13 +88,11 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         game = createGame(gameMode, surfaceView);
 
-        game.addCharacter(playerOne);
-        game.addCharacter(playerTwo);
+        game.addPlayer(playerOne);
+        game.addPlayer(playerTwo);
 
         gameThread = new MainThread(game);
 
-        int width = getResources().getDisplayMetrics().widthPixels;
-        int height = getResources().getDisplayMetrics().heightPixels;
         game.setScreenSize(width, height);
         gameThread.start();
     }

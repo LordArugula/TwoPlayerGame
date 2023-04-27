@@ -43,19 +43,28 @@ public abstract class Game implements RequiresUpdate {
     }
 
     @Override
-    public void update(double deltaTime, double time) {
+    public final void update(double deltaTime, double time) {
         if (!isRunning) {
             return;
         }
 
         updateGameEntities(deltaTime, time);
         renderGameEntities();
+
+        onUpdate(deltaTime, time);
+
         handleCollisions();
         restrictPlayersToScreenBoundaries();
     }
 
+    protected abstract void onUpdate(double deltaTime, double time);
+
     private void restrictPlayersToScreenBoundaries() {
         for (Character character : characters) {
+            if (!(character instanceof Player)) {
+                continue;
+            }
+
             Vector2 position = character.getPosition();
             Vector2 halfSize = character.getHalfSize();
 
@@ -66,21 +75,30 @@ public abstract class Game implements RequiresUpdate {
                 x = halfSize.x;
             }
 
-            if (position.y - halfSize.y < 0) {
-                y = halfSize.y;
-            }
-
             if (position.x + halfSize.x > width) {
                 x = width - halfSize.x;
             }
 
-            if (position.y + halfSize.y > height) {
-                y = height - halfSize.y;
+            if (character.getRotation() == 0f) {
+                if (position.y - halfSize.y < height / 2f) {
+                    y = height / 2f + halfSize.y;
+                }
+                if (position.y + halfSize.y > height) {
+                    y = height - halfSize.y;
+                }
+            } else if (character.getRotation() == 180f) {
+                if (position.y - halfSize.y < 0) {
+                    y = halfSize.y;
+                }
+
+                if (position.y + halfSize.y > height / 2f) {
+                    y = height / 2f - halfSize.y;
+                }
             }
+
 
             character.setPosition(new Vector2(x, y));
         }
-
     }
 
     private void handleCollisions() {
@@ -149,7 +167,15 @@ public abstract class Game implements RequiresUpdate {
         }
     }
 
-    public void addCharacter(Character character) {
-        characters.add(character);
+    public void addPlayer(Player player) {
+        characters.add(player);
+        player.addOnHealthChangedListener(this::onCharacterHealthChanged);
+    }
+
+    private void onCharacterHealthChanged(Character character, int current, int old) {
+        if (current <= 0) {
+            characters.remove(character);
+            character.removeOnHealthChangedListener(this::onCharacterHealthChanged);
+        }
     }
 }

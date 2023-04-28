@@ -9,6 +9,11 @@ public class PvpGame extends Game {
     }
 
     @Override
+    protected void onStart() {
+
+    }
+
+    @Override
     protected void onUpdate(double deltaTime, double time) {
 
     }

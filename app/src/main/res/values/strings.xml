@@ -2,8 +2,6 @@
     <string name="app_name">TwoPlayerGame</string>
     <string name="health_label">HP</string>
     <string name="score_label">Score</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_button">Menu</string>
     <string name="menu_title">Two Player Shooter</string>
     <string name="play_button">Play</string>
@@ -12,4 +10,7 @@
     <string name="scores_text">High Scores</string>
     <string name="clear_scores_button">Clear Scores</string>
     <string name="EXTRA_GAME_MODE">GAME_MODE</string>
+    <string name="fire_button">fire</string>
+    <string name="game_end_lose_text">Defeat!</string>
+    <string name="game_end_win_text">Victory!</string>
 </resources>

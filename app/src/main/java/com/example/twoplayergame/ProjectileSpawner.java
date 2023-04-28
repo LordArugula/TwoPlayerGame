@@ -12,6 +12,38 @@ public class ProjectileSpawner {
 
     private boolean isActive;
 
+    public double getArc() {
+        return arc;
+    }
+
+    public void setArc(double arc) {
+        this.arc = arc;
+    }
+
+    public double getFireRate() {
+        return fireRate;
+    }
+
+    public void setFireRate(double fireRate) {
+        this.fireRate = fireRate;
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
+    }
+
+    public int getProjectileCount() {
+        return projectileCount;
+    }
+
+    public void setProjectileCount(int projectileCount) {
+        this.projectileCount = projectileCount;
+    }
+
     public ProjectileSpawner(ProjectileData projectileData, int projectileCount, double fireSpeed, double arc, double radius) {
         this.projectileData = projectileData;
         this.projectileCount = projectileCount;
@@ -41,14 +73,13 @@ public class ProjectileSpawner {
         this.projectileData = projectileData;
     }
 
-    private final float PI = (float) Math.PI;
-
     public void spawnProjectiles(Character character, ProjectilePool pool) {
         Vector2 position = character.getPosition();
         Vector2 forward = character.getForward();
         float rotation = (float) Math.toRadians(character.getRotation());
 
         float angleSpread = (float) (arc / projectileCount);
+        float PI = (float) Math.PI;
         float startAngle = (float) ((angleSpread / 2) - (arc / 2)) + PI;
 
         for (int i = 0; i < projectileCount; i++) {

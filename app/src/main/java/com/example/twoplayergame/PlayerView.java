@@ -15,6 +15,8 @@ public class PlayerView {
     private TextView scoreText;
 
     private Player player;
+    private View joystickView;
+    private View fireButton;
 
     public PlayerView() {
         handler = new Handler(Looper.getMainLooper());
@@ -30,10 +32,10 @@ public class PlayerView {
         scoreText = viewGroup.findViewById(R.id.score_text);
         onScoreChanged(player, player.getScore());
 
-        View fireButton = viewGroup.findViewById(R.id.fire_button);
+        fireButton = viewGroup.findViewById(R.id.fire_button);
         fireButton.setOnTouchListener(this::onTouchFireButton);
 
-        View joystickView = viewGroup.findViewById(R.id.joystick_view);
+        joystickView = viewGroup.findViewById(R.id.joystick_view);
         Joystick joystick = new Joystick(joystickView, player::setMoveInput);
         joystickView.setRotation(player.getRotation());
     }
@@ -54,7 +56,13 @@ public class PlayerView {
     }
 
     public void onHealthChanged(Character character, int current, int old) {
-        handler.post(() -> healthText.setText(String.format(Locale.getDefault(), "%d", current)));
+        handler.post(() -> {
+            if (current <= 0) {
+                joystickView.setVisibility(View.INVISIBLE);
+                fireButton.setVisibility(View.INVISIBLE);
+            }
+            healthText.setText(String.format(Locale.getDefault(), "%d", current));
+        });
     }
 
     public void onScoreChanged(Character character, int score) {

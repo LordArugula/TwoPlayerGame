@@ -7,14 +7,12 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 public class ScoresActivity extends AppCompatActivity {
-    public static final String SHARED_PREF_FILE = "com.two_player_game.scores";
-    private static final String SCORES = "SCORES";
-
     SharedPreferences sharedPreferences;
 
     private ScoreAdapter scoreAdapter;
@@ -25,13 +23,13 @@ public class ScoresActivity extends AppCompatActivity {
         super.onCreate(savedInstance);
         setContentView(R.layout.activity_scores);
 
-        sharedPreferences = getSharedPreferences(SHARED_PREF_FILE, MODE_PRIVATE);
-        String scoresJson = sharedPreferences.getString(SCORES, null);
+        sharedPreferences = getSharedPreferences(ScoreUtils.SHARED_PREF_FILE, MODE_PRIVATE);
 
-        scores = JsonUtils.scoresFromJson(scoresJson);
+        scores = ScoreUtils.getScores(sharedPreferences);
         scoreAdapter = new ScoreAdapter(scores);
 
         RecyclerView scoresRecyclerView = findViewById(R.id.scores_recycler_view);
+        scoresRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         scoresRecyclerView.setAdapter(scoreAdapter);
 
         Button menuButton = findViewById(R.id.menu_button);
@@ -50,10 +48,7 @@ public class ScoresActivity extends AppCompatActivity {
     private void onClickClearScoresButton(View view) {
         int count = scores.size();
         scores.clear();
-        sharedPreferences.edit()
-                .clear()
-                .apply();
-
+        ScoreUtils.clearScores(sharedPreferences);
         scoreAdapter.notifyItemRangeRemoved(0, count);
     }
 }

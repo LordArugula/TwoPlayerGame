@@ -2,6 +2,9 @@ package com.example.twoplayergame;
 
 import android.graphics.Bitmap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CharacterBuilder {
     private Vector2 position = Vector2.zero();
     private float rotation;
@@ -11,7 +14,11 @@ public class CharacterBuilder {
     private int health;
     private int score;
     private double movementSpeed;
-    private ProjectileSpawner projectileSpawner;
+    private final List<ProjectileSpawner> projectileSpawners;
+
+    public CharacterBuilder() {
+        projectileSpawners = new ArrayList<>();
+    }
 
     public CharacterBuilder withPosition(Vector2 position) {
         this.position = position;
@@ -49,7 +56,7 @@ public class CharacterBuilder {
     }
 
     public CharacterBuilder withProjectileSpawner(ProjectileSpawner projectileSpawner) {
-        this.projectileSpawner = projectileSpawner;
+        this.projectileSpawners.add(projectileSpawner);
         return this;
     }
 
@@ -59,7 +66,21 @@ public class CharacterBuilder {
         player.setHealth(health);
         player.setScore(score);
         player.setMovementSpeed(movementSpeed);
-        player.setSpawnerData(projectileSpawner);
+        for (ProjectileSpawner projectileSpawner : projectileSpawners) {
+            player.addSpawnerData(projectileSpawner);
+        }
         return player;
+    }
+
+    public Enemy buildEnemy() {
+        Enemy enemy = new Enemy(position, rotation, bitmap);
+        enemy.setName(name);
+        enemy.setHealth(health);
+        enemy.setScore(score);
+        enemy.setMovementSpeed(movementSpeed);
+        for (ProjectileSpawner projectileSpawner : projectileSpawners) {
+            enemy.addSpawnerData(projectileSpawner);
+        }
+        return enemy;
     }
 }

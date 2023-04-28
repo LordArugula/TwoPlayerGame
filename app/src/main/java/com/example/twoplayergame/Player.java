@@ -1,7 +1,6 @@
 package com.example.twoplayergame;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 public class Player extends Character {
     // user input
@@ -19,7 +18,9 @@ public class Player extends Character {
     }
 
     public void setFireInput(boolean shouldFire) {
-        getSpawnerData().setActive(shouldFire);
+        for (ProjectileSpawner spawner : getProjectileSpawners()) {
+            spawner.setActive(shouldFire);
+        }
     }
 
     public void setMoveInput(Vector2 input) {

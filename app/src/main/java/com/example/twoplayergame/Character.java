@@ -27,10 +27,12 @@ public class Character extends GameEntity implements RequiresUpdate {
     private double movementSpeed;
 
     // projectile spawner data
-    private ProjectileSpawner projectileSpawner;
+    private final List<ProjectileSpawner> projectileSpawners;
 
     public Character(Vector2 position, float rotation, Bitmap drawable) {
         super(position, rotation, drawable);
+
+        projectileSpawners = new ArrayList<>();
 
         onHealthChangedListeners = new ArrayList<>();
         onScoreChangedListeners = new ArrayList<>();
@@ -102,12 +104,12 @@ public class Character extends GameEntity implements RequiresUpdate {
         this.movementSpeed = movementSpeed;
     }
 
-    public void setSpawnerData(ProjectileSpawner projectileSpawner) {
-        this.projectileSpawner = projectileSpawner;
+    public void addSpawnerData(ProjectileSpawner projectileSpawner) {
+        this.projectileSpawners.add(projectileSpawner);
     }
 
-    public ProjectileSpawner getSpawnerData() {
-        return projectileSpawner;
+    public List<ProjectileSpawner> getProjectileSpawners() {
+        return projectileSpawners;
     }
 
     public void addOnHealthChangedListener(OnHealthChangedListener onHealthChanged) {
@@ -128,10 +130,12 @@ public class Character extends GameEntity implements RequiresUpdate {
         Vector2 delta = Vector2.mul(movementDirection, movementSpeed * deltaTime);
         move(delta);
 
-        projectileSpawner.updateTimer(deltaTime);
-        if (projectileSpawner.canFireProjectiles()) {
-            projectileSpawner.spawnProjectiles(this, new ProjectilePoolProvider().getInstance());
-            projectileSpawner.resetTimer();
+        for (ProjectileSpawner projectileSpawner : projectileSpawners) {
+            projectileSpawner.updateTimer(deltaTime);
+            if (projectileSpawner.canFireProjectiles()) {
+                projectileSpawner.spawnProjectiles(this, new ProjectilePoolProvider().getInstance());
+                projectileSpawner.resetTimer();
+            }
         }
     }
 }

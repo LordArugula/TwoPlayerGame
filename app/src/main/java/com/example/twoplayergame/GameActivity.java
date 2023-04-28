@@ -1,9 +1,12 @@
 package com.example.twoplayergame;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -12,22 +15,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
+import androidx.fragment.app.FragmentContainerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameActivity extends AppCompatActivity implements SurfaceHolder.Callback {
+    private final Handler handler = new Handler(Looper.getMainLooper());
     private Game game;
     private MainThread gameThread;
+
+    private SharedPreferences sharedPreferences;
+    private FragmentContainerView gameEndFragmentView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setScreenConfigs();
         setContentView(R.layout.activity_game);
+
+        sharedPreferences = getSharedPreferences(ScoreUtils.SHARED_PREF_FILE, MODE_PRIVATE);
+
+        gameEndFragmentView = findViewById(R.id.game_end_fragment_view);
+        gameEndFragmentView.setVisibility(View.INVISIBLE);
 
         SurfaceView surfaceView = findViewById(R.id.game_view);
         surfaceView.getHolder().addCallback(this);
@@ -87,14 +104,40 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         GameMode gameMode = (GameMode) intent.getSerializableExtra(String.valueOf(R.string.EXTRA_GAME_MODE));
 
         game = createGame(gameMode, surfaceView);
-
-        game.addPlayer(playerOne);
-        game.addPlayer(playerTwo);
+        game.setScreenSize(width, height);
+        game.addCharacter(playerOne);
+        game.addCharacter(playerTwo);
+        game.setOnGameWonListener(() -> onGameWon(playerOne, playerTwo));
+        game.setOnGameLostListener(() -> onGameLost(playerOne, playerTwo));
 
         gameThread = new MainThread(game);
 
-        game.setScreenSize(width, height);
         gameThread.start();
+    }
+
+    private void onGameLost(Player playerOne, Player playerTwo) {
+        handler.post(() -> {
+            gameEndFragmentView.setVisibility(View.VISIBLE);
+            TextView title = gameEndFragmentView.findViewById(R.id.game_end_title);
+            title.setText(R.string.game_end_lose_text);
+            recordPlayerStats(playerOne, playerTwo);
+        });
+    }
+
+    private void onGameWon(Player playerOne, Player playerTwo) {
+        handler.post(() -> {
+            gameEndFragmentView.setVisibility(View.VISIBLE);
+            TextView title = gameEndFragmentView.findViewById(R.id.game_end_title);
+            title.setText(R.string.game_end_win_text);
+            recordPlayerStats(playerOne, playerTwo);
+        });
+    }
+
+    private void recordPlayerStats(Player playerOne, Player playerTwo) {
+        List<Score> scores = new ArrayList<>(2);
+        scores.add(new Score(playerOne.getName(), playerOne.getScore()));
+        scores.add(new Score(playerTwo.getName(), playerTwo.getScore()));
+        ScoreUtils.addScores(sharedPreferences, scores);
     }
 
     private Game createGame(GameMode gameMode, SurfaceView surfaceView) {
@@ -105,7 +148,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
             case PVP:
                 return new PvpGame(surfaceView);
             case COOP:
-                return new CoopGame(surfaceView);
+                return new CoopGame(surfaceView, getResources());
             default:
                 throw new UnsupportedOperationException();
         }

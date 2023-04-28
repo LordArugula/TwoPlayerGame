@@ -1,6 +1,8 @@
 # TwoPlayerGame
 A simple two player bullet hell Android game developed in Java.
 
+Features a two-player co-op mode where both players work together to defeat a boss enemy.
+
 # CS 453 Assignment 5: Design a Two-Player Game App
 
 ## Requirements

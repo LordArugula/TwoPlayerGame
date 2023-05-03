@@ -4,12 +4,18 @@ public class ProjectileSpawnerBuilder {
     private ProjectileData projectile;
     private int count;
     private double fireSpeed;
-    private double arc;
+    private float arc;
     private double radius;
+    private float rotation;
 
     public ProjectileSpawnerBuilder withProjectile(ProjectileData projectileData, int count) {
         this.projectile = projectileData;
         this.count = count;
+        return this;
+    }
+
+    public ProjectileSpawnerBuilder withRotation(float degrees) {
+        this.rotation = degrees;
         return this;
     }
 
@@ -18,8 +24,8 @@ public class ProjectileSpawnerBuilder {
         return this;
     }
 
-    public ProjectileSpawnerBuilder withArcDegrees(double degrees) {
-        this.arc = Math.toRadians(degrees);
+    public ProjectileSpawnerBuilder withArcDegrees(float degrees) {
+        this.arc = (float) Math.toRadians(degrees);
         return this;
     }
 
@@ -29,6 +35,8 @@ public class ProjectileSpawnerBuilder {
     }
 
     public ProjectileSpawner build() {
-        return new ProjectileSpawner(projectile, count, fireSpeed, arc, radius);
+        ProjectileSpawner projectileSpawner = new ProjectileSpawner(projectile, count, fireSpeed, arc, radius);
+        projectileSpawner.setRotation(rotation);
+        return projectileSpawner;
     }
 }

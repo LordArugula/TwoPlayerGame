@@ -4,7 +4,8 @@ public class ProjectileSpawner {
     private ProjectileData projectileData;
     private int projectileCount;
 
-    private double arc;
+    private float rotation;
+    private float arc;
     private double radius;
     private double fireRate;
 
@@ -12,12 +13,20 @@ public class ProjectileSpawner {
 
     private boolean isActive;
 
-    public double getArc() {
+    public float getRotation() {
+        return rotation;
+    }
+
+    public void setRotation(float rotation) {
+        this.rotation = rotation;
+    }
+
+    public float getArc() {
         return arc;
     }
 
-    public void setArc(double arc) {
-        this.arc = arc;
+    public void setArc(float radians) {
+        this.arc = radians;
     }
 
     public double getFireRate() {
@@ -44,7 +53,7 @@ public class ProjectileSpawner {
         this.projectileCount = projectileCount;
     }
 
-    public ProjectileSpawner(ProjectileData projectileData, int projectileCount, double fireSpeed, double arc, double radius) {
+    public ProjectileSpawner(ProjectileData projectileData, int projectileCount, double fireSpeed, float arc, double radius) {
         this.projectileData = projectileData;
         this.projectileCount = projectileCount;
 
@@ -77,10 +86,11 @@ public class ProjectileSpawner {
         Vector2 position = character.getPosition();
         Vector2 forward = character.getForward();
         float rotation = (float) Math.toRadians(character.getRotation());
+        float rotatonOffset = (float) Math.toRadians(this.rotation);
 
-        float angleSpread = (float) (arc / projectileCount);
+        float angleSpread = arc / projectileCount;
         float PI = (float) Math.PI;
-        float startAngle = (float) ((angleSpread / 2) - (arc / 2)) + PI;
+        float startAngle = ((angleSpread / 2) - (arc / 2)) + PI;
 
         for (int i = 0; i < projectileCount; i++) {
             Projectile projectile = pool.obtain();
@@ -90,7 +100,7 @@ public class ProjectileSpawner {
             projectile.setSize(projectileData.getSize());
             projectile.setBitmap(projectileData.getBitmap());
 
-            float projectileRotation = startAngle + angleSpread * i;
+            float projectileRotation = startAngle + angleSpread * i + rotatonOffset;
             projectile.setRotation((float) Math.toDegrees(rotation + projectileRotation));
 
             Vector2 projectileDirection = Vector2.rotate(forward, projectileRotation);

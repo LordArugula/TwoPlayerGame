@@ -5,13 +5,17 @@ import android.os.Looper;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.Locale;
 
 public class PlayerView {
     private final Handler handler;
-    private TextView healthText;
+
+    private ProgressBar healthBar;
+    private int maxHealth;
+
     private TextView scoreText;
 
     private Player player;
@@ -27,8 +31,10 @@ public class PlayerView {
         player.addOnHealthChangedListener(this::onHealthChanged);
         player.addOnScoreChangedListener(this::onScoreChanged);
 
-        healthText = viewGroup.findViewById(R.id.health_text);
-        onHealthChanged(player, player.getHealth(), 0);
+        healthBar = viewGroup.findViewById(R.id.health_bar);
+        maxHealth = player.getHealth();
+        onHealthChanged(player, maxHealth, 0);
+
         scoreText = viewGroup.findViewById(R.id.score_text);
         onScoreChanged(player, player.getScore());
 
@@ -61,7 +67,9 @@ public class PlayerView {
                 joystickView.setVisibility(View.INVISIBLE);
                 fireButton.setVisibility(View.INVISIBLE);
             }
-            healthText.setText(String.format(Locale.getDefault(), "%d", current));
+
+            int progress = Math.floorDiv(current * 100, maxHealth);
+            healthBar.setProgress(progress, true);
         });
     }
 

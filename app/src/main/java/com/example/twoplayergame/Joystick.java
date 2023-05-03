@@ -33,6 +33,7 @@ public class Joystick {
             case MotionEvent.ACTION_DOWN: {
                 isActive = true;
                 handleJoystickMotion(view, motionEvent);
+                view.setAlpha(0.5f);
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
@@ -51,6 +52,7 @@ public class Joystick {
                     isActive = false;
 
                     listener.onJoystickMove(Vector2.zero());
+                    view.setAlpha(0.9f);
                 }
                 break;
             default:

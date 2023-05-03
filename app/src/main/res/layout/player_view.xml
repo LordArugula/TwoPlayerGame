@@ -10,18 +10,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:labelFor="@id/health_text"
+        android:labelFor="@id/health_bar"
         android:text="@string/health_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/health_text"
+    <ProgressBar
+        android:id="@+id/health_bar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:minWidth="80dp"
+        android:progressTint="#FF0000"
+        app:layout_constraintBottom_toBottomOf="@id/health_label"
         app:layout_constraintStart_toEndOf="@id/health_label"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,27 +58,18 @@
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/joystick_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/joystick"
+        android:background="@drawable/joystick_background"
+        android:backgroundTint="#D6D6D6"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/joystick_socket"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:background="@drawable/joystick_background"
-            android:backgroundTint="#D6D6D6"
-            android:gravity="center">
-
-            <View
-                android:id="@+id/joystick_handle"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:background="@drawable/joystick"
-                android:backgroundTint="#787878" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        <View
+            android:id="@+id/joystick_handle"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/joystick"
+            android:backgroundTint="#787878" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

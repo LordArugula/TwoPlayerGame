@@ -1,7 +1,9 @@
 package com.example.twoplayergame;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -78,7 +80,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         playerOnePlayerView.bind(playerOneViewGroup, playerOne);
 
         ViewGroup playerTwoViewGroup = findViewById(R.id.player_two_game_view);
-        getLayoutInflater().inflate(R.layout.player_view, playerTwoViewGroup);
+        layoutInflater.inflate(R.layout.player_view, playerTwoViewGroup);
 
         Bitmap playerTwoBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.player_two);
         Player playerTwo = new CharacterBuilder()
@@ -187,9 +189,13 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         game.stop();
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     private void setScreenConfigs() {
         // removes title
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        // lock screen to portrait
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         Window window = getWindow();
         // keep screen on

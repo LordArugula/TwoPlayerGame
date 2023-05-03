@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="joystick_size">120dp</dimen>
+    <dimen name="joystick_handle_size">64dp</dimen>
+    <dimen name="margin_medium">24dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="button_text_size">20sp</dimen>
 </resources>

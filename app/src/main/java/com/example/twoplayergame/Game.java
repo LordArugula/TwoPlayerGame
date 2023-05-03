@@ -48,7 +48,9 @@ public abstract class Game implements RequiresUpdate {
     }
 
     public void start() {
-        onStart();
+        if (!isRunning) {
+            onStart();
+        }
         isRunning = true;
     }
 
@@ -188,6 +190,7 @@ public abstract class Game implements RequiresUpdate {
                         characterIndex--;
 
                         projectile.getOwner().addScore(character.getScore());
+                        break;
                     }
                 }
             }

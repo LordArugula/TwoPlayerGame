@@ -54,11 +54,6 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
 
-        LayoutInflater layoutInflater = getLayoutInflater();
-
-        ViewGroup playerOneViewGroup = findViewById(R.id.player_one_game_view);
-        layoutInflater.inflate(R.layout.player_view, playerOneViewGroup);
-
         Bitmap playerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.player_one);
         Bitmap projectileBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.projectile);
         Player playerOne = new CharacterBuilder()
@@ -76,11 +71,9 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
                         .build())
                 .buildPlayer();
 
+        ViewGroup playerOneViewGroup = findViewById(R.id.player_one_game_view);
         PlayerView playerOnePlayerView = new PlayerView();
         playerOnePlayerView.bind(playerOneViewGroup, playerOne);
-
-        ViewGroup playerTwoViewGroup = findViewById(R.id.player_two_game_view);
-        layoutInflater.inflate(R.layout.player_view, playerTwoViewGroup);
 
         Bitmap playerTwoBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.player_two);
         Player playerTwo = new CharacterBuilder()
@@ -99,6 +92,8 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
                         .build())
                 .buildPlayer();
 
+        ViewGroup playerTwoViewGroup = findViewById(R.id.player_two_game_view);
+        playerTwoViewGroup.setRotation(180);
         PlayerView playerTwoPlayerView = new PlayerView();
         playerTwoPlayerView.bind(playerTwoViewGroup, playerTwo);
 

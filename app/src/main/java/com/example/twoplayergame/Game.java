@@ -208,6 +208,10 @@ public abstract class Game implements RequiresUpdate {
 
     protected void renderGameEntities() {
         SurfaceHolder surfaceHolder = surfaceView.getHolder();
+        if (!surfaceHolder.getSurface().isValid()) {
+            return;
+        }
+
         Canvas canvas = null;
         try {
             canvas = surfaceHolder.lockCanvas();

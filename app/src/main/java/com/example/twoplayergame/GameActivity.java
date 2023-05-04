@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -25,6 +24,7 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.FragmentContainerView;
+import androidx.fragment.app.FragmentManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,6 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private MainThread gameThread;
 
     private SharedPreferences sharedPreferences;
-    private FragmentContainerView gameEndFragmentView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +43,6 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         setContentView(R.layout.activity_game);
 
         sharedPreferences = getSharedPreferences(ScoreUtils.SHARED_PREF_FILE, MODE_PRIVATE);
-
-        gameEndFragmentView = findViewById(R.id.game_end_fragment_view);
-        gameEndFragmentView.setVisibility(View.INVISIBLE);
 
         SurfaceView surfaceView = findViewById(R.id.game_view);
         surfaceView.getHolder().addCallback(this);
@@ -114,18 +110,25 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     private void onGameLost(Player playerOne, Player playerTwo) {
         handler.post(() -> {
-            gameEndFragmentView.setVisibility(View.VISIBLE);
-            TextView title = gameEndFragmentView.findViewById(R.id.game_end_title);
-            title.setText(R.string.game_end_lose_text);
+            GameEndFragment gameEndFragment = new GameEndFragment("Defeat!");
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_view, gameEndFragment, null)
+                    .setReorderingAllowed(true)
+                    .commit();
             recordPlayerStats(playerOne, playerTwo);
         });
     }
 
     private void onGameWon(Player playerOne, Player playerTwo) {
         handler.post(() -> {
-            gameEndFragmentView.setVisibility(View.VISIBLE);
-            TextView title = gameEndFragmentView.findViewById(R.id.game_end_title);
-            title.setText(R.string.game_end_win_text);
+            GameEndFragment gameEndFragment = new GameEndFragment("Victory!");
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_view, gameEndFragment, null)
+                    .setReorderingAllowed(true)
+                    .commit();
+
             recordPlayerStats(playerOne, playerTwo);
         });
     }

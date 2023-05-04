@@ -19,22 +19,22 @@
         android:id="@+id/menu_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:width="140dp"
+        android:width="@dimen/menu_button_width"
         android:text="@string/menu_button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/high_scores_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/game_end_title" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/high_scores_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:width="140dp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:width="@dimen/menu_button_width"
         android:text="@string/high_scores_button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menu_button" />
+        app:layout_constraintTop_toBottomOf="@+id/game_end_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

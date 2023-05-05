@@ -12,8 +12,8 @@ public class CoopGame extends Game {
     public CoopGame(SurfaceView surfaceView, Resources resources) {
         super(surfaceView);
 
-        enemyBitmap = BitmapFactory.decodeResource(resources, R.drawable.player_two);
-        projectileBitmap = BitmapFactory.decodeResource(resources, R.drawable.projectile);
+        enemyBitmap = BitmapFactory.decodeResource(resources, R.drawable.enemy);
+        projectileBitmap = BitmapFactory.decodeResource(resources, R.drawable.projectile_enemy);
     }
 
     private double timer;

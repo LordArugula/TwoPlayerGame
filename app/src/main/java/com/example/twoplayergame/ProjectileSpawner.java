@@ -85,8 +85,8 @@ public class ProjectileSpawner {
     public void spawnProjectiles(Character character, ProjectilePool pool) {
         Vector2 position = character.getPosition();
         Vector2 forward = character.getForward();
-        float rotation = (float) Math.toRadians(character.getRotation());
-        float rotatonOffset = (float) Math.toRadians(this.rotation);
+        float rotation = (float) Math.toRadians(character.getRotation() + 180);
+        float rotationOffset = (float) Math.toRadians(this.rotation);
 
         float angleSpread = arc / projectileCount;
         float PI = (float) Math.PI;
@@ -100,7 +100,7 @@ public class ProjectileSpawner {
             projectile.setSize(projectileData.getSize());
             projectile.setBitmap(projectileData.getBitmap());
 
-            float projectileRotation = startAngle + angleSpread * i + rotatonOffset;
+            float projectileRotation = startAngle + angleSpread * i + rotationOffset;
             projectile.setRotation((float) Math.toDegrees(rotation + projectileRotation));
 
             Vector2 projectileDirection = Vector2.rotate(forward, projectileRotation);

@@ -16,14 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
-import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.ArrayList;
@@ -51,7 +49,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         int height = getResources().getDisplayMetrics().heightPixels;
 
         Bitmap playerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.player_one);
-        Bitmap projectileBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.projectile);
+        Bitmap projectileBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.projectile_player);
         Player playerOne = new CharacterBuilder()
                 .withPosition(new Vector2(width * 0.5, height * 0.75))
                 .withBitmap(playerBitmap)

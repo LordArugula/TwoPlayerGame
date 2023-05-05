@@ -72,6 +72,20 @@ public abstract class Game implements RequiresUpdate {
             return;
         }
 
+        if (players.size() == 0) {
+            stop();
+            onGameLostListener.onGameLost();
+            renderGameEntities();
+            return;
+        }
+
+        if (enemies.size() == 0) {
+            stop();
+            onGameWonListener.onGameWon();
+            renderGameEntities();
+            return;
+        }
+
         updateGameEntities(deltaTime, time);
         renderGameEntities();
 
@@ -79,16 +93,6 @@ public abstract class Game implements RequiresUpdate {
 
         handleCollisions();
         restrictPlayersToScreenBoundaries();
-
-        if (players.size() == 0) {
-            stop();
-            onGameLostListener.onGameLost();
-        }
-
-        if (enemies.size() == 0) {
-            stop();
-            onGameWonListener.onGameWon();
-        }
     }
 
     protected abstract void onStart();
